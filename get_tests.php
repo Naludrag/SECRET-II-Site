@@ -3,10 +3,14 @@ include 'functions_for_tests.php';
 
 $result = getUsers();
 $directoryNotFound = [];
-if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])
-   && isset($_POST['path']) && !empty($_POST['path'])) {	
-    $directoryNotFound = createZipFile($_POST['path'], $_POST['selected_username'] );
+if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])) {
+    if(isset($_POST['path']) && !empty($_POST['path'])){
+        $directoryNotFound = createZipFile($_POST['path'], $_POST['selected_username']);
+    } else if(is_uploaded_file($_FILES['fileToUpload']['tmp_name'])) {
+        $directoryNotFound = send_files($_FILES['fileToUpload'], $_POST['selected_username']);
+    }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,16 +75,27 @@ if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])
       </nav>
       <div class="pt-24 gradient">
           <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
-              <!--Left Col-->
+              <!--Get Tests functionality-->
               <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
-                  <p class="uppercase tracking-loose w-full">Get the tests of your students</p>
-                  <h1 class="my-4 text-5xl font-bold leading-tight">
-                      Get the tests in a zip
-                  </h1>
-                  <p class="leading-normal text-2xl mb-8">
-                      Please fill the form below to get the tests
-                  </p>
-                  <form class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center" action="get_tests.php" method="post">
+                  <?php if($_GET['mode'] == "get") { ?>
+                      <p class="uppercase tracking-loose w-full">Get the tests of your students</p>
+                      <h1 class="my-4 text-5xl font-bold leading-tight">
+                          Get the tests in a zip
+                      </h1>
+                      <p class="leading-normal text-2xl mb-8">
+                          Please fill the form below to get the tests
+                      </p>
+                  <?php } elseif ($_GET['mode'] == "send") { ?>
+                      <p class="uppercase tracking-loose w-full">Send files to our students</p>
+                      <h1 class="my-4 text-5xl font-bold leading-tight">
+                          Send files or a folder to our students
+                      </h1>
+                      <p class="leading-normal text-2xl mb-8">
+                          Please fill the form below to get the tests
+                      </p>
+                  <?php } ?>
+                  <form class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center" action="./get_tests.php?mode=<?php echo $_GET['mode']?>" method="post"
+                  <?php if($_GET['mode'] == "send") echo 'enctype="multipart/form-data"'; ?>>
                       <div class="container px-3 mx-auto flex flex-wrap mb-3">
                           <select class="form-multiselect block w-72 mt-1" id="username" name="username[]" multiple="multiple">
                               <?php
@@ -96,9 +111,16 @@ if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])
                           <button class="hover:underline bg-white text-gray-800 font-bold rounded-full m-4 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
                                            type="button" onclick="unselectUser()">Remove selection</button>
                       </div>
-                      <label class="px-3" for="fpath">Path to the test folder:</label><br>
-                      <input class="text-gray-800 px-3 rounded-full block" type="text" id="path" name="path" placeholder="Folder/TE1" required>
-                      <button onclick="selectAll();" class="block hover:underline gradient text-white font-bold rounded-full m-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">Search for the tests</button>
+                      <?php if($_GET['mode'] == "get") { ?>
+                          <label class="px-3" for="fpath">Path to the test folder:</label><br>
+                          <input class="text-gray-800 px-3 rounded-full block" type="text" id="path" name="path" placeholder="Folder/TE1" required>
+                      <?php } elseif ($_GET['mode'] == "send") { ?>
+                          <label class="px-3" for="fpath">Choose the file/folder to send:</label><br>
+                          <input type="file" name="fileToUpload" id="fileToUpload">
+                      <?php } ?>
+                      <button onclick="selectAll();" class="block hover:underline gradient text-white font-bold rounded-full m-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+                          <?php if($_GET['mode'] == "get") { echo "Search for the tests"; }
+                                elseif ($_GET['mode'] == "send") { echo "Send files to students"; } ?></button>
                   </form>
               </div>
               <!--Right Col-->
@@ -113,10 +135,20 @@ if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])
                         }
                     }
                   ?>
-
               </div>
           </div>
       </div>
+      <section class="container mx-auto text-center">
+          <div class="w-full mb-4">
+              <div class="h-1 mx-auto bg-white w-1/6 opacity-25 my-0 py-0 rounded-t"></div>
+          </div>
+          <a href="get_tests.php?mode=get" class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+              Get Tests
+          </a>
+          <a href="get_tests.php?mode=send" class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+              Send files
+          </a>
+      </section>
 </body>
   <script>
       /**
@@ -149,7 +181,6 @@ if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])
       function selectAll()
       {
           let selectBox = document.getElementById("selected_username");
-
           for (let i = 0; i < selectBox.options.length; i++)
           {
               selectBox.options[i].selected = true;

@@ -8,7 +8,7 @@ function getUsers() {
     $result = [];
     $keys = ['name', 'passwd', 'uid', 'gid', 'gecos', 'dir', 'shell'];
     // Opens the tuple with the file
-    $handle = fopen('/etc/passwd', 'r');
+    $handle = fopen('users.txt', 'r');
     if (!$handle) {
         throw new RuntimeException("failed to open /etc/passwd for reading! " . print_r(error_get_last(), true));
     }
@@ -56,7 +56,7 @@ function createZipFile($path, $users){
             while ($file = readdir($dir)) {
                 if (is_file($completePath . $file)) {
                     if($zip->addFile($completePath . $file, $username.'/'.$file)){
-                    
+
                     } else {
                         array_push($directoryNotFound ,"Failed to add file");
                     }
@@ -80,7 +80,33 @@ function createZipFile($path, $users){
     return $directoryNotFound;
 }
 
+/**
+ * @param $errno
+ * @param $errstr
+ */
 function warning_handler($errno, $errstr) {
 // do something
 }
-?>
+
+/**
+ * @param $files array containing the informations of teh files that need to be loaded for the students
+ * @param $users array containing all the info for the users
+ */
+function send_files($files, $users){
+    $directoryNotFound = [];
+    foreach ($users as $username){
+        $target_dir = "/home/".$username."/";
+        $file = $files['name'];
+        $path = pathinfo($file);
+        $filename = $path['filename'];
+        $ext = $path['extension'];
+        $temp_name = $files['tmp_name'];
+        $path_filename_ext = $target_dir.$filename.".".$ext;
+        if (file_exists($path_filename_ext)) {
+            array_push($directoryNotFound, "Sorry, file already exists for user <b>$username</b>");
+        } else{
+            move_uploaded_file($temp_name,$path_filename_ext);
+        }
+    }
+    return $directoryNotFound;
+}
