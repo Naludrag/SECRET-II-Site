@@ -8,7 +8,7 @@ function getUsers() {
     $result = [];
     $keys = ['name', 'passwd', 'uid', 'gid', 'gecos', 'dir', 'shell'];
     // Opens the tuple with the file
-    $handle = fopen('users.txt', 'r');
+    $handle = fopen('/etc/passwd', 'r');
     if (!$handle) {
         throw new RuntimeException("failed to open /etc/passwd for reading! " . print_r(error_get_last(), true));
     }
@@ -29,6 +29,9 @@ function getUsers() {
  * @return array that contains all the repository that were not found
  */
 function createZipFile($path, $users){
+    if ($path == null){
+        $path = "tests";
+    }
     $zip = new ZipArchive();
 
     $directoryNotFound = [];
@@ -68,12 +71,10 @@ function createZipFile($path, $users){
             restore_error_handler();
         }
     }
-    var_dump($zip);
     $res = $zip->close();
-    var_dump($res);
     // close and save archive
     if($res){
-	array_push($directoryNotFound ,'The zip was created successfully please click to download <a href="'.$zipPath.'">'.$DelFilePath.'</a>');
+	    array_push($directoryNotFound ,'The zip was created successfully please click to download <a href="'.$zipPath.'">'.$DelFilePath.'</a>');
     } else {
         array_push($directoryNotFound ,'The zip could not be created in the folder '.$zipPath);
     }
@@ -89,24 +90,39 @@ function warning_handler($errno, $errstr) {
 }
 
 /**
+ * Will send files to the different students
  * @param $files array containing the informations of teh files that need to be loaded for the students
  * @param $users array containing all the info for the users
+ * @return array that contains all the upload that failed
  */
 function send_files($files, $users){
     $directoryNotFound = [];
+    $first = true;
+    $pathToCopyFrom = "";
     foreach ($users as $username){
-        $target_dir = "/home/".$username."/";
+        $target_dir = "/home/".$username."/tests/";
         $file = $files['name'];
         $path = pathinfo($file);
         $filename = $path['filename'];
         $ext = $path['extension'];
         $temp_name = $files['tmp_name'];
         $path_filename_ext = $target_dir.$filename.".".$ext;
-        if (file_exists($path_filename_ext)) {
-            array_push($directoryNotFound, "Sorry, file already exists for user <b>$username</b>");
-        } else{
-            move_uploaded_file($temp_name,$path_filename_ext);
+        if ($first){
+            $res2 = move_uploaded_file($temp_name,$path_filename_ext);
+            if ($res2 == false){
+                array_push($directoryNotFound, "Sorry, a problem was encoutered with the user <b>$username</b>");
+            }
+            $pathToCopyFrom = $path_filename_ext;
+            $first = false;
+        } else {
+            $res1 = copy($pathToCopyFrom,$path_filename_ext);
+            if ($res1 == false){
+                array_push($directoryNotFound, "Sorry, a problem was encoutered with the user <b>$username</b>");
+            }
         }
+    }
+    if(count($directoryNotFound) == 0){
+        array_push($directoryNotFound, "All the files were correctly sent!");
     }
     return $directoryNotFound;
 }

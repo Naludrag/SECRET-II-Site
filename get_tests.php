@@ -4,7 +4,7 @@ include 'functions_for_tests.php';
 $result = getUsers();
 $directoryNotFound = [];
 if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])) {
-    if(isset($_POST['path']) && !empty($_POST['path'])){
+    if(isset($_POST['path'])){
         $directoryNotFound = createZipFile($_POST['path'], $_POST['selected_username']);
     } else if(is_uploaded_file($_FILES['fileToUpload']['tmp_name'])) {
         $directoryNotFound = send_files($_FILES['fileToUpload'], $_POST['selected_username']);
@@ -113,7 +113,7 @@ if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])) {
                       </div>
                       <?php if($_GET['mode'] == "get") { ?>
                           <label class="px-3" for="fpath">Path to the test folder:</label><br>
-                          <input class="text-gray-800 px-3 rounded-full block" type="text" id="path" name="path" placeholder="Folder/TE1" required>
+                          <input class="text-gray-800 px-3 rounded-full block" type="text" id="path" name="path" placeholder="By default, /home/tests">
                       <?php } elseif ($_GET['mode'] == "send") { ?>
                           <label class="px-3" for="fpath">Choose the file/folder to send:</label><br>
                           <input type="file" name="fileToUpload" id="fileToUpload">
@@ -128,6 +128,11 @@ if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])) {
                   <?php
                     if(count($directoryNotFound) == 0) {
                         echo '<img class="w-full md:w-4/5 z-50" src="hero.png" />';
+                    } else if (count($directoryNotFound) == 1) {
+                        echo '<h1 class="leading-normal text-2xl mb-8">Success, the action desired went well</h1>';
+                        foreach($directoryNotFound as $message){
+                            echo '<p>'.$message.'</p>';
+                        }
                     } else {
                         echo '<h1 class="leading-normal text-2xl mb-8">Be careful their were some problems when creating the zip</h1>';
                         foreach($directoryNotFound as $message){
