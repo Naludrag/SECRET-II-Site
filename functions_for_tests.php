@@ -6,19 +6,19 @@
 function getUsers() {
     // Array that will contain all the users found in the file
     $result = [];
-    $keys = ['name', 'passwd', 'uid', 'gid', 'gecos', 'dir', 'shell'];
-    // Opens the tuple with the file
-    $handle = fopen('/etc/passwd', 'r');
-    if (!$handle) {
+    $ds=ldap_connect("IP", 389);  // must be a valid LDAP server!
+    if (!$ds) {
         throw new RuntimeException("failed to open /etc/passwd for reading! " . print_r(error_get_last(), true));
     }
+    $r=ldap_bind($ds, "USER", "PASS");
+    $sr=ldap_search($ds, "OU=User,OU=SECRET,DC=secret,DC=domain", "cn=*");
+
+    $info = ldap_get_entries($ds, $sr);
     // Will check for users above 1000 because that is the uid from which new users are created
-    while (($values = fgetcsv($handle, 1000, ':')) !== false) {
-        if ($values[2] > 1001) {
-            $result[] = array_combine($keys, $values);
-        }
+    for ($i=0; $i<$info["count"]; $i++) {
+        $result += array($i => $info[$i]);
     }
-    fclose($handle);
+
     return $result;
 }
 

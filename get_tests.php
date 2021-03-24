@@ -100,7 +100,7 @@ if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])) {
                           <select class="form-multiselect block w-72 mt-1" id="username" name="username[]" multiple="multiple">
                               <?php
                               foreach ($result as $user){
-                                  echo '<option class="text-gray-800" value="'.$user["name"].'" >'.$user["name"].'</option>';
+                                  echo '<option class="text-gray-800" value="'.$user["cn"][0].'" >'.$user["cn"][0].'</option>';
                               }
                               ?>
                           </select>
