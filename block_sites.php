@@ -1,7 +1,3 @@
-<?php
-
-
-?>
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
@@ -50,13 +46,16 @@
                     <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="/">Home</a>
                 </li>
                 <li class="mr-3">
-                    <a class="inline-block py-2 px-4 text-black font-bold no-underline" href="#">Get Tests</a>
+                    <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="./files.php">Get Tests</a>
                 </li>
                 <li class="mr-3">
                     <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="./zabbix">Zabbix</a>
                 </li>
                 <li class="mr-3">
-                    <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="./zabbix">Get Logs</a>
+                    <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="http://localhost:3000">Get Logs</a>
+                </li>
+                <li class="mr-3">
+                    <a class="inline-block py-2 px-4 text-black font-bold no-underline" href="#">Block Sites</a>
                 </li>
             </ul>
         </div>
@@ -67,29 +66,26 @@
     <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row">
         <!--Left Col-->
         <div class="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
-            <p class="uppercase tracking-loose w-full">Create new config file</p>
+            <p class="uppercase tracking-loose w-full">Create new configuration file</p>
             <h1 class="my-4 text-5xl font-bold leading-tight">
-                Creation of profiles
+                Creation of new files
             </h1>
             <p class="leading-normal text-2xl mb-2">
                 Add sites that you want to block
             </p>
             <form class="flex-1" onsubmit="return addItem('list', this.inputItem)">
-                <input class="text-gray-800 px-3 rounded-full inline" type="text" id="inputItem" placeholder="Enter a Task">
+                <input class="text-gray-800 px-3 rounded-full inline" type="text" id="inputItem" placeholder="Enter a domain name">
                 <input class="inline hover:underline gradient text-white font-bold rounded-full m-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
                        type="submit" value="Add website to list">
             </form>
             <p class="leading-normal text-2xl">
                 List of Websites
             </p>
-            <ul class="px-3 bg-green-400 bg-opacity-10" id="list" style="columns: 200px 3;">
+            <h3 id="NoWebsites" class="text-center md:text-center mt-1">No websites for the moment...</h3>
+            <ul class="px-3 bg-green-400 bg-opacity-10 mt-1" id="list" style="columns: 200px 3;">
 
             </ul>
-            <form onsubmit="download()">
-                <input class="my-6" type="radio" id="black" name="typeList" value="black" checked="checked">
-                <label for="black">BlackList</label>
-                <input type="radio" id="white" name="typeList" value="white">
-                <label for="white">WhiteList</label></br>
+            <form onsubmit="download()" class="mt-10">
                 <label for="nameFile">Please enter the name of the file : </label>
                 <input class="text-gray-800 px-3 rounded-full inline" type="text" id="inputFileName" placeholder="Name of the file">
                 <input class="my-6 hover:underline gradient text-white font-bold rounded-full py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out"
@@ -97,18 +93,18 @@
             </form>
         </div>
         <!--Right Col-->
-        <div class="flex flex-col w-full md:w-2/5 items-start text-center md:text-left mx-8">
+        <div class="flex flex-col w-full md:w-2/5 items-start text-center md:text-left ml-48">
             <p class="uppercase tracking-loose w-full">Use profile</p>
             <h1 class="my-4 text-5xl font-bold leading-tight">
-                Profile for capture
+                Start a capture
             </h1>
             <p class="leading-normal text-2xl mb-8">
-                Choose profile to use for capture
+                Explanation on how to start a capture
             </p>
-            <form onsubmit="return addItem('list', this.inputItem)">
-                <label class="px-3" for="fpath">Choose the config file wanted:</label><br>
-                <input type="file" name="fileToUpload" id="fileToUpload">
-            </form>
+            <p class="leading-normal mb-8">
+                To start a capture please open a terminal and run the command : <br>
+                python3 /etc/mitmproxy_configfile_start.py
+            </p>
         </div>
     </div>
 </div>
@@ -118,38 +114,52 @@
      * Add site to list
      */
     function addItem(liste, inputField) {
+        // If now site is entered do not add it
+        if(inputField.value === ""){
+            return
+        }
+        // Get the list of websites
         var list = document.getElementById(liste);
+        // Create a li to add the website to the list
         var listItem = document.createElement("li");
-        listItem.innerText = inputField.value; // passed the field.
+        // Get the value of the user input
+        listItem.innerText = inputField.value;
         listItem.className = "hover:bg-green-400 bg-opacity-10";
+        // Add the website to the list
         list.appendChild(listItem);
-        return false; // stop submission
+        // If a website is added disable the message
+        if(document.getElementById("list").getElementsByTagName('li').length === 1){
+            var message = document.getElementById("NoWebsites");
+            message.style.display = "none";
+        }
+        // To not reload the page
+        return false;
     }
 
     /**
-     * To download a file for config
-     * @param type
+     * To create a configuration file and make it download
      */
     function download() {
+        // Get the name chosen by the user
         var name = document.getElementById("inputFileName").value + ".config";
         var arr = [];
+        // Get the list of websites
         var sites = document.getElementById("list").getElementsByTagName('li');
+        // If now websites are given. Alert the user
+        if(sites.length === 0){
+            window.alert("Please enter at least one website");
+            return
+        }
+        // Add the websites to the array
         for(let i = 0;i < sites.length; i++)
         {
             arr.push(sites[i].innerHTML+"\n");
         }
-        var radios = document.getElementsByName('typeList');
-        for (var i = 0, length = radios.length; i < length; i++) {
-            if (radios[i].checked) {
-                arr.push(radios[i].value+"\n");
-                // only one radio can be logically checked, don't check the rest
-                break;
-            }
-        }
+        // Download the file
         var file = new Blob(arr, {type: 'text/plain'});
-        if (window.navigator.msSaveOrOpenBlob) // IE10+
+        if (window.navigator.msSaveOrOpenBlob)
             window.navigator.msSaveOrOpenBlob(file, name);
-        else { // Others
+        else {
             var a = document.createElement("a"),
                 url = URL.createObjectURL(file);
             a.href = url;
