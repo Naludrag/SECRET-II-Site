@@ -46,13 +46,16 @@
           <a class="inline-block py-2 px-4 text-black font-bold no-underline" href="#">Home</a>
         </li>
         <li class="mr-3">
-          <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="./get_tests.php?mode=get">Get Tests</a>
+          <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="./files.php?mode=get">Get Tests</a>
         </li>
         <li class="mr-3">
-          <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="./zabbix">Zabbix</a>
+          <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="http://localhost:3000">See Logs</a>
         </li>
         <li class="mr-3">
-          <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="./zabbix">Get Logs</a>
+          <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="./block_sites.php">Block Sites</a>
+        </li>
+        <li class="mr-3">
+          <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="/zabbix">Zabbix</a>
         </li>
       </ul>
     </div>
@@ -69,7 +72,7 @@
     </div>
     <div class="w-full md:w-1/3 p-6 flex flex-col flex-grow flex-shrink">
       <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow">
-        <a href="./get_tests.php?mode=get" class="flex flex-wrap no-underline hover:no-underline">
+        <a href="./files.php?mode=get" class="flex flex-wrap no-underline hover:no-underline">
           <p class="w-full text-gray-600 text-xs md:text-sm px-6">
             Get student Tests
           </p>
@@ -83,8 +86,52 @@
       </div>
       <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-6">
         <div class="flex items-center justify-start">
-          <a href="./get_tests.php?mode=get" class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+          <a href="./files.php?mode=get" class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
             Get Tests
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="w-full md:w-1/3 p-6 flex flex-col flex-grow flex-shrink">
+      <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow">
+        <a href="http://localhost:3000" class="flex flex-wrap no-underline hover:no-underline">
+          <p class="w-full text-gray-600 text-xs md:text-sm px-6">
+            See Logs
+          </p>
+          <div class="w-full font-bold text-xl text-gray-800 px-6">
+            To see the logs in realtime
+          </div>
+          <p class="text-gray-800 text-base px-6 mb-5">
+            See the actions of your student in realtime and be informed if something looks suspicious
+          </p>
+        </a>
+      </div>
+      <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-6">
+        <div class="flex items-center justify-end">
+          <a href="http://localhost:3000" class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+            See the logs
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="w-full md:w-1/3 p-6 flex flex-col flex-grow flex-shrink">
+      <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow">
+        <a href="./block_sites.php" class="flex flex-wrap no-underline hover:no-underline">
+          <p class="w-full text-gray-600 text-xs md:text-sm px-6">
+            Blocking sites
+          </p>
+          <div class="w-full font-bold text-xl text-gray-800 px-6">
+            To block access to sites
+          </div>
+          <p class="text-gray-800 text-base px-6 mb-5">
+            To block your students from going to some sites
+          </p>
+        </a>
+      </div>
+      <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-6">
+        <div class="flex items-center justify-end">
+          <a href="./block_sites.php" class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+            Block sites
           </a>
         </div>
       </div>
@@ -104,53 +151,9 @@
         </a>
       </div>
       <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-6">
-        <div class="flex items-center justify-center">
+        <div class="flex items-center justify-end">
           <a href="/zabbix" class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
             Zabbix
-          </a>
-        </div>
-      </div>
-    </div>
-    <div class="w-full md:w-1/3 p-6 flex flex-col flex-grow flex-shrink">
-      <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow">
-        <a href="#" class="flex flex-wrap no-underline hover:no-underline">
-          <p class="w-full text-gray-600 text-xs md:text-sm px-6">
-            See Logs
-          </p>
-          <div class="w-full font-bold text-xl text-gray-800 px-6">
-            To see the logs in realtime
-          </div>
-          <p class="text-gray-800 text-base px-6 mb-5">
-            See the actions of your student in realtime and be informed if something looks suspicious
-          </p>
-        </a>
-      </div>
-      <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-6">
-        <div class="flex items-center justify-end">
-          <button class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-            See the logs
-          </button>
-        </div>
-      </div>
-    </div>
-    <div class="w-full md:w-1/3 p-6 flex flex-col flex-grow flex-shrink">
-      <div class="flex-1 bg-white rounded-t rounded-b-none overflow-hidden shadow">
-        <a href="#" class="flex flex-wrap no-underline hover:no-underline">
-          <p class="w-full text-gray-600 text-xs md:text-sm px-6">
-            Blocking sites
-          </p>
-          <div class="w-full font-bold text-xl text-gray-800 px-6">
-            To block access to sites
-          </div>
-          <p class="text-gray-800 text-base px-6 mb-5">
-            To block your students from going to some sites
-          </p>
-        </a>
-      </div>
-      <div class="flex-none mt-auto bg-white rounded-b rounded-t-none overflow-hidden shadow p-6">
-        <div class="flex items-center justify-end">
-          <a href="./block_sites.php" class="mx-auto lg:mx-0 hover:underline gradient text-white font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-            Block sites
           </a>
         </div>
       </div>
@@ -189,9 +192,11 @@
   <h3 class="my-4 text-3xl leading-tight">
     If you see some problems please inform !
   </h3>
-  <button class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-    Source Code
-  </button>
+  <div class="flex items-center justify-center">
+    <a href="https://github.com/Naludrag/SECRET_II" class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
+      Source Code
+    </a>
+  </div>
 </section>
 <script>
   var scrollpos = window.scrollY;

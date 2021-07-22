@@ -46,16 +46,16 @@
                     <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="/">Home</a>
                 </li>
                 <li class="mr-3">
-                    <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="./files.php">Get Tests</a>
+                    <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="./files.php?mode=get">Get Tests</a>
                 </li>
                 <li class="mr-3">
-                    <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="./zabbix">Zabbix</a>
-                </li>
-                <li class="mr-3">
-                    <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="http://localhost:3000">Get Logs</a>
+                    <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="http://localhost:3000">See Logs</a>
                 </li>
                 <li class="mr-3">
                     <a class="inline-block py-2 px-4 text-black font-bold no-underline" href="#">Block Sites</a>
+                </li>
+                <li class="mr-3">
+                    <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4" href="/zabbix">Zabbix</a>
                 </li>
             </ul>
         </div>
