@@ -103,7 +103,7 @@
             </p>
             <p class="leading-normal mb-8">
                 To start a capture please open a terminal and run the command : <br>
-                python3 /etc/mitmproxy_configfile_start.py
+                python3 /usr/local/bin/mitmproxy_configfile_start.py
             </p>
         </div>
     </div>

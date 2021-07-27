@@ -4,25 +4,10 @@
  * @return array return all the users found in the passwd file
  */
 function getUsers() {
-    // Array that will contain all the users found in the file
-//    $result = [];
-//    $ds=ldap_connect("192.168.0.228", 389);  // must be a valid LDAP server!
-//    if (!$ds) {
-//        throw new RuntimeException("failed to open ldap connection! " . print_r(error_get_last(), true));
-//    }
-//    $r=ldap_bind($ds, "CN=Administrator,CN=Users,DC=secret,DC=domain", "Admin123");
-//    $sr=ldap_search($ds, "OU=User,OU=SECRET,DC=secret,DC=domain", "cn=*");
-//
-//    $info = ldap_get_entries($ds, $sr);
-//    // Will check for users above 1000 because that is the uid from which new users are created
-//    for ($i=0; $i<$info["count"]; $i++) {
-//        $result += array($i => $info[$i]);
-//    }
     $result = [];
     if ($handle = opendir('/home/EINET')) {
         /* This is the correct way to loop over the directory. */
         while (false !== ($entry = readdir($handle))) {
-            var_dump($entry);
             if($entry != "." && $entry != "..") {
                 $result[] = $entry;
             }
@@ -46,8 +31,8 @@ function createZipFile($path, $users){
 
     $directoryNotFound = [];
 
-    $DelFilePath="first.zip";
-    if ( !readdir($_SERVER['DOCUMENT_ROOT'] . '/zip') ) {
+    $DelFilePath="class.zip";
+    if ( !is_dir($_SERVER['DOCUMENT_ROOT'] . '/zip') ) {
         mkdir ($_SERVER['DOCUMENT_ROOT'] . '/zip', 0777, true);
     }
     // ***EDIT***
@@ -61,7 +46,7 @@ function createZipFile($path, $users){
         die ("Could not open archive");
     }
     foreach ($users as $username){
-        $completePath = "/home/".$username."/".$path."/";
+        $completePath = "/home/EINET/".$username."/".$path."/";
         // Will catch the warning sent by the opendir if it has one
         set_error_handler("warning_handler", E_WARNING);
         if($dir = opendir($completePath)) {
@@ -110,7 +95,7 @@ function send_files($files, $users){
     $first = true;
     $pathToCopyFrom = "";
     foreach ($users as $username){
-        $target_dir = "/home/".$username."/tests/";
+        $target_dir = "/home/EINET/".$username."/tests/";
         $file = $files['name'];
         $path = pathinfo($file);
         $filename = $path['filename'];
