@@ -40,7 +40,7 @@ Permets de créer un zip contenant tous les documents du dossier _tests_ des él
 
 Il est possible de spécifier un dossier à l'intérieur de _tests_ si tous les élèves l'ont créé dans l'entrée utilisteur en fin de formulaire. Lorsque le bouton _**Search for the tests**_ est cliqué un résultat sera affiché sur la droite de la page et vous pourrez télécharger un zip.
 
-![get_tests](./imagesREADME/Get_tests.PNG)
+![get_tests](./imagesREADME/Get_Tests.PNG)
 
 ### Send Files
 Cette deuxième partie permet d'envoyer des fichiers aux élèves. Le formulaire sera très similaire à celui montrer précédemment. Le seul changement se situera à la fin de celui-ci. Au lieu d'avoir une entrée utilisateur, un bouton _Choose a file_ sera maintenant disponible pour choisir le fichier à envoyer.
