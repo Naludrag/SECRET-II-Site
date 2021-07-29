@@ -11,9 +11,7 @@
     <meta name="keywords" content="" />
     <meta name="author" content="" />
     <link rel="stylesheet" href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" />
-    <!--Replace with your tailwind.css once created-->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" />
-    <!-- Define your gradient here - use online tools to find a gradient matching your branding-->
     <style>
         .gradient {
             background: linear-gradient(90deg, #3b9e95 0%, #4dc0b5 100%);
@@ -114,22 +112,22 @@
      * Add site to list
      */
     function addItem(liste, inputField) {
-        // If now site is entered do not add it
+        // If no site is entered do not add it
         if(inputField.value === ""){
             return
         }
         // Get the list of websites
-        var list = document.getElementById(liste);
+        let list = document.getElementById(liste);
         // Create a li to add the website to the list
-        var listItem = document.createElement("li");
-        // Get the value of the user input
+        let listItem = document.createElement("li");
+        // Get the value of the user input and configure the class of the li
         listItem.innerText = inputField.value;
         listItem.className = "hover:bg-green-400 bg-opacity-10";
         // Add the website to the list
         list.appendChild(listItem);
         // If a website is added disable the message
         if(document.getElementById("list").getElementsByTagName('li').length === 1){
-            var message = document.getElementById("NoWebsites");
+            let message = document.getElementById("NoWebsites");
             message.style.display = "none";
         }
         // To not reload the page
@@ -140,11 +138,11 @@
      * To create a configuration file and make it download
      */
     function download() {
-        // Get the name chosen by the user
-        var name = document.getElementById("inputFileName").value + ".config";
-        var arr = [];
+        // Get the name chosen for the file by the user
+        let name = document.getElementById("inputFileName").value + ".config";
+        let arr = [];
         // Get the list of websites
-        var sites = document.getElementById("list").getElementsByTagName('li');
+        let sites = document.getElementById("list").getElementsByTagName('li');
         // If now websites are given. Alert the user
         if(sites.length === 0){
             window.alert("Please enter at least one website");
@@ -156,11 +154,11 @@
             arr.push(sites[i].innerHTML+"\n");
         }
         // Download the file
-        var file = new Blob(arr, {type: 'text/plain'});
+        let file = new Blob(arr, {type: 'text/plain'});
         if (window.navigator.msSaveOrOpenBlob)
             window.navigator.msSaveOrOpenBlob(file, name);
         else {
-            var a = document.createElement("a"),
+            let a = document.createElement("a"),
                 url = URL.createObjectURL(file);
             a.href = url;
             a.download = name;

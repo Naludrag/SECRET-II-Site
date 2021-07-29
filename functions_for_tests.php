@@ -23,7 +23,7 @@ function getUsers() {
 /**
  * Create the zip file containing all the tests of the students
  * @param $path String that is the path to the tests
- * @param $users array that is the users form which the tests needs to be recovered
+ * @param $users array that is the users from which the tests needs to be recovered
  * @return array that contains all the repository that were not found
  */
 function createZipFile($path, $users){
@@ -32,7 +32,7 @@ function createZipFile($path, $users){
         $path = "tests";
     }
     $zip = new ZipArchive();
-    // Will contain all the directories that were not found
+    // Will contain all the directories that were not found or a success message
     $directoryNotFound = [];
     // Will verify that the zip folder is created in the DOCUMENT_ROOT if not will create it
     $DelFilePath="class.zip";
@@ -46,7 +46,7 @@ function createZipFile($path, $users){
     if(file_exists($zipPath)) {
         unlink ($zipPath);
     }
-    // Verify that the zip can be created or overwrittent
+    // Verify that the zip can be created or overwritten
     if ($zip->open($zipPath, ZIPARCHIVE::CREATE | ZipArchive::OVERWRITE) != TRUE) {
         die ("Could not open archive");
     }
@@ -60,7 +60,7 @@ function createZipFile($path, $users){
             restore_error_handler();
             // Loop until there is no more files
             while ($file = readdir($dir)) {
-                // Verify that it is a file if it is a folder will not add it
+                // Verify that it is a file
                 if (is_file($completePath . $file)) {
                     // Add the file to the zip in the folder username
                     if($zip->addFile($completePath . $file, $username.'/'.$file)){
@@ -73,7 +73,7 @@ function createZipFile($path, $users){
             }
         }
         else{
-            // If directory given is not found for the student
+            // If directory given is not found for the student add a message in the array
             array_push($directoryNotFound ,"Directory not found for student <b>$username</b>");
             restore_error_handler();
         }
@@ -89,7 +89,7 @@ function createZipFile($path, $users){
 }
 
 /**
- * Will catch the error for the opendir
+ * Will catch the error for the opendir function
  * @param $errno int that is the number of the error
  * @param $errstr string that is the message of the error
  */
@@ -99,8 +99,8 @@ function warning_handler($errno, $errstr) {
 }
 
 /**
- * Will send files to the different students
- * @param $files array containing the information of the files that need to be loaded for the students
+ * Will send a file to the different students
+ * @param $files array containing the information of the file that need to be loaded for the students
  * @param $users array containing all the info for the users
  * @return array that contains all the upload that failed or a message that all went well
  */
@@ -110,7 +110,7 @@ function send_files($files, $users){
     $pathToCopyFrom = "";
     // Go through all the users
     foreach ($users as $username){
-        // Copy the file to the tests folder
+        // Get the target directory
         $target_dir = "/home/EINET/".$username."/tests/";
         // Get the name of the file
         $file = $files['name'];
@@ -122,7 +122,8 @@ function send_files($files, $users){
         $temp_name = $files['tmp_name'];
         // The new path of the file
         $path_filename_ext = $target_dir.$filename.".".$ext;
-        // If it is the first time copying the file it will be moved to the folder to then copy it to other folder
+        // If it is the first time copying the file it will be moved to the folder to then copy it to other folders
+        // If not the file will by copied only at first try because after that the browser delete the file
         if ($first){
             $res2 = move_uploaded_file($temp_name,$path_filename_ext);
             if ($res2 == false){

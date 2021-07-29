@@ -25,9 +25,7 @@ if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])) {
     <meta name="keywords" content="" />
     <meta name="author" content="" />
     <link rel="stylesheet" href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" />
-    <!--Replace with your tailwind.css once created-->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" />
-    <!-- Define your gradient here - use online tools to find a gradient matching your branding-->
     <style>
         .gradient {
             background: linear-gradient(90deg, #3b9e95 0%, #4dc0b5 100%);
@@ -206,17 +204,26 @@ if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])) {
       </section>
 </body>
   <script>
+      /**
+       * Will filter the users in the dropdown list
+       * https://www.w3schools.com/howto/howto_js_filter_dropdown.asp
+       */
       function filterFunction() {
           let input, filter, i;
+          // Get the value entered by the user
           input = document.getElementById("searchUser");
           filter = input.value.toUpperCase();
+          // Get the usernames in the dropdown list
           let listuser = document.getElementById("dropdown");
           let names = listuser.getElementsByTagName('p');
+          // Go through the usernames and see which one contains the input given
           for (i = 0; i < names.length; i++) {
               let txtValue = names[i].textContent || names[i].innerText;
+              // Get the divs and button to completely remove the user from the list or show it again
               let divparent = names[i].parentElement;
               let divparent2 = divparent.parentElement;
               let button = divparent2.parentElement;
+              // If the username contains the input show it. If it does not hide the user
               if (txtValue.toUpperCase().indexOf(filter) > -1) {
                   names[i].style.display = "";
                   divparent.style.display = "";
@@ -232,19 +239,25 @@ if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])) {
       }
 
       /**
-       * Will select the users
+       * Will create a dropdown list of users
        */
       function selectUser(user) {
+          // Get the div selectedUserList
           let listuser = document.getElementById("selectedUserList");
+          // Create a new div inside containing specific class and the id that will be the name of the user
           let div = document.createElement('div');
           div.id = user;
           div.className = 'flex justify-center items-center m-1 font-medium py-1 px-2 bg-white rounded-full text-teal-700 bg-teal-100 border border-teal-300';
+          // Create a paragraph that will contain the name of the user
           let pName = document.createElement('p');
           pName.innerHTML = user;
           pName.className = 'text-xs font-normal leading-none max-w-full flex-initial';
+          // Append the paragraph to the div previously created
           div.appendChild(pName)
+          // Create a div that will look like a button
           let divButton = document.createElement('div');
           divButton.className = 'flex flex-auto flex-row-reverse';
+          // Create a button that will be a cross to unselect the user if not wanted anymore
           let buttonCross = document.createElement('button');
           buttonCross.addEventListener("click", function () {
               unselectUser(user)
@@ -257,6 +270,9 @@ if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])) {
           return false;
       }
 
+      /**
+       * Will generate a cross for the svg tag
+       */
       function generateCross() {
           svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
           svg.setAttribute('width', '100%');
@@ -283,12 +299,20 @@ if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])) {
           return svg;
       }
 
+      /**
+       * Will unselect a user by removing it from the selected list
+       */
       function unselectUser(user) {
+          // Get the div of the user to unselected
           let div = document.getElementById(user);
+          // Remove the content and delete it
           div.innerHTML = "";
           div.remove();
       }
 
+      /**
+       * Will make the dropdown arrow move and hide or show the dropdown list
+       */
       function dropdown()
       {
           let dropdown = document.getElementById("dropdown");
@@ -300,15 +324,19 @@ if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])) {
               dropdown.style.display = "none";
               polyline.setAttribute("points", '18 15 12 9 6 15');
           }
-
-
       }
 
+      /**
+       * Will select all the users and make the action desired
+       */
       function selectAll()
       {
+          // Get the list of usernames
           let listuser = document.getElementById("selectedUserList");
-          let selectedUsername = document.getElementById("selected_username");
           let names = listuser.getElementsByTagName('p');
+          // Get the select tag that will contain all the selected users
+          let selectedUsername = document.getElementById("selected_username");
+          // Add all the users to the list
           for (let i = 0; i < names.length; i++)
           {
               let option = document.createElement("option");
@@ -317,6 +345,7 @@ if(isset($_POST['selected_username']) && !empty($_POST['selected_username'])) {
               option.value = names[i].innerHTML;
               selectedUsername.add(option);
           }
+          // Select all the users to let PHP use this value to send the files or download files for the right users
           for (let i = 0; i < selectedUsername.options.length; i++)
           {
               selectedUsername.options[i].selected = true;
