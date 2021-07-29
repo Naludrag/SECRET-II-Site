@@ -8,8 +8,10 @@
 >
 > Date : 30.07.2021
 
-Ce document va expliquer l'utilité les différents fichiers crée pour le site web du projet SECRET et du résultat graphique de ceux-ci si cela est le cas.
+Ce document va expliquer l'utilité les différents fichiers créés pour le site web du projet SECRET et du résultat graphique de ceux-ci si cela est le cas.
 Ce site sera à disposition pour regrouper une multitude de fonctionnalités à un seul endroit qui sera http://localhost.
+
+**Ce document ainsi que les sources qui l'accompagnent sont disponibles dans un dépôt GitHub. Vous pouvez y accéder à l'adresse https://github.com/Naludrag/SECRET-II-Site.**
 
 ## Dossier Images
 Ce dossier contient toutes les images qui seront utilisées pour le site web.
